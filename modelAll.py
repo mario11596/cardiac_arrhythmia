@@ -88,7 +88,7 @@ def model_decision_tree():
 
     parameters = {
         'estimator__max_features': [None, 'auto', 'log2', 'sqrt'],
-        'estimator__max_depth': [5, 10, 15, 20, 50, 70, 90, 120, 150, 200],
+        'estimator__max_depth': [5, 10, 15, 20, 50, 70, 90, 120, 150],
         'estimator__min_samples_split': [5, 10, 15],
         'estimator__min_samples_leaf': [2, 3, 4, 5, 6]
     }
@@ -99,7 +99,6 @@ def model_decision_tree():
     model_grid_search.fit(X_train, y_train)
     prediction_results = model_grid_search.predict(X_test)
     probability_results = model_grid_search.predict_proba(X_test)
-    print()
 
     confusion_matrix_values = confusion_matrix(y_test, prediction_results, labels=categories)
     classification_report_all = classification_report(y_test, prediction_results, zero_division=1)
@@ -241,7 +240,6 @@ def model_random_forest():
     print('F1 score is:' + str(f1_result))
     print('Precision score: ' + str(precision_result))
     print('Recall score: ' + str(recall_result))
-    print('Confusion matrix')
     print(confusion_matrix_values)
     print(classification_report_all)
 
@@ -283,7 +281,6 @@ def model_gradient_boosting():
     print('F1 score is:' + str(f1_result))
     print('Precision score: ' + str(precision_result))
     print('Recall score: ' + str(recall_result))
-    print('Confusion matrix')
     print(confusion_matrix_values)
     print(classification_report_all)
 
@@ -291,7 +288,7 @@ def model_gradient_boosting():
     confusion_matrix_plot(confusion_matrix_values, 'gradient-boosting-all-dataset')
 
 
-# create ROC-AUC graph
+# calculate ROC AUC score
 def roc_auc_value(probability_target, target_results):
     probability_target = np.where(probability_target > np.inf, np.nan, probability_target)
     roc_auc_calculate = roc_auc_score(target_results, probability_target, multi_class='ovr')
@@ -308,11 +305,3 @@ def confusion_matrix_plot(confusion_matrix_values, name_picture):
     plt.xlabel('Predicted')
     plt.savefig('Confusion_heatmap-{}.png'.format(name_picture))
     return
-
-
-
-
-
-
-
-
